@@ -14,22 +14,20 @@
 		  <thead>
 		    <tr>
 		      <th scope="col">#</th>
-		      <th scope="col">Email</th>
-		      <th scope="col">Name</th>
+		      <th scope="col">Group</th>
 		      <th scope="col">Action</th>
 		    </tr>
 		  </thead>
 		  <tbody>
 		  	<?php
 		  		$i = 1;
-		  		foreach ($users as $user) :
+		  		foreach ($group as $g) :
 		  	?>
 		    <tr>
 		      <th scope="row"><?= $i; ?></th>
-		      <td><?= $user['email']; ?></td>
-		      <td><?= $user['name']; ?></td>
+		      <td><?= $g['name']; ?></td>
 		      <td>
-		      		<a href="assignuser/<?= $user['id']; ?>" class="badge badge-success">assign</a>
+		      		<a href="uploadform/<?= $g['id']; ?>" class="badge badge-success">upload</a>
 		      </td>
 		    </tr>
 			<?php

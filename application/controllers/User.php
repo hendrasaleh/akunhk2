@@ -88,36 +88,55 @@ class User extends CI_Controller
 		$this->load->view('templates/header', $data);
 		$this->load->view('templates/sidebar', $data);
 		$this->load->view('templates/topbar', $data);
-		$this->load->view('manager/users', $data);
+		$this->load->view('user/group-list', $data);
 		$this->load->view('templates/footer');
 		
 	}
 
-	public function upload()
+	public function uploadForm($id)
 	{
 		$data['title'] = 'Upload Raport';
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		$data['group'] = $this->db->get_where('user_group', ['id' => $id])->row_array();
 		$data['file'] = $this->db->get_where('file', ['user_email' => $this->session->userdata('email')])->result_array();
+		$data['student'] = $this->db->get_where('student', ['group_id' => $id])->result_array();
+
+		$this->load->view('templates/header', $data);
+		$this->load->view('templates/sidebar', $data);
+		$this->load->view('templates/topbar', $data);
+		$this->load->view("user/upload-file", $data);
+		$this->load->view('templates/footer');
+	}
+
+	public function upload($id)
+	{
+		$data['title'] = 'Upload Raport';
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		$data['group'] = $this->db->get_where('user_group', ['id' => $id])->row_array();
+		$data['file'] = $this->db->get_where('file', ['user_email' => $this->session->userdata('email')])->result_array();
+		$data['student'] = $this->db->get_where('student', ['group_id' => $id])->result_array();
+		
 
 		$this->form_validation->set_rules('email', 'Email', 'required|trim');
+		$this->form_validation->set_rules('student_id', 'Student', 'required|trim');
 		$this->form_validation->set_rules('file', '','callback_file_check');
 
 		if ($this->form_validation->run() == false) {
 			$this->load->view('templates/header', $data);
 			$this->load->view('templates/sidebar', $data);
 			$this->load->view('templates/topbar', $data);
-			$this->load->view('user/upload-file', $data);
+			$this->load->view("user/upload-file", $data);
 			$this->load->view('templates/footer');
 		} else {
 			
 			$upload_file = $_FILES['file']['name'];
 			$pecah = explode(".", $upload_file);
-			$file_type = $pecah[1];
+			$file_type = $pecah[1];			
 
 			if ($upload_file) {
 				$config['allowed_types'] = 'doc|xls|ppt|docx|xlsx|pptx|pdf';
 				$config['max_size']      = '5120';
-				$config['upload_path']   = './assets/files/';
+				$config['upload_path']   = './assets/files/raport/';
 
 				$this->load->library('upload', $config);
 
@@ -131,13 +150,15 @@ class User extends CI_Controller
 			$data = [
 				'date' => time(),
 				'user_email' => $this->input->post('email'),
-				'file_type' => $file_type,
-				'name' => $name
+				'file_type' => $this->input->post('r_type'),
+				'name' => $name,
+				'student_id' => $this->input->post('student_id')
 			];
+			$no = $this->input->post('group_id');
 
 			$this->db->insert('file', $data);
-			$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert"> File berhasil diupload!</div>');
-			redirect('user/upload');
+			$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert"> Raport berhasil diupload!</div>');
+			redirect("user/upload/$no");
 		}
 	}
 

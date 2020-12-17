@@ -4,6 +4,7 @@
 
 	<!-- Page Heading -->
 	<h1 class="h3 mb-4 text-gray-800"><?= $title; ?></h1>
+	<h5>Kelas : <?= $group['name']; ?></h5>
 	<div class="col-lg-8">
 		<?= $this->session->flashdata('message'); ?>
 		<?= form_error('file', '<div class="alert alert-danger" role="alert">', '</div>'); ?>
@@ -11,11 +12,36 @@
 
 	<div class="row">
 		<div class="col-lg-8">
-			<?= form_open_multipart('user/upload');?>
+			<form enctype="multipart/form-data" action="user/upload/<?= $group['id']; ?>" method="POST">
 				<div class="form-group row">
 					<label for="email" class="col-sm-2 col-form-label">Email</label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control" id="email" name="email" value="<?= $user['email']; ?>" readonly>
+						<input type="hidden" name="group_id" value="<?= $group['id']; ?>">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="email" class="col-sm-2 col-form-label">Student</label>
+					<div class="col-sm-10">
+						<select name="student_id" id="student_id" class="form-control">
+							<option value="">Select Student</option>
+							<?php foreach ( $student as $s ) : ?>
+								<option value="<?= $s['id']; ?>"><?= $s['full_name']; ?></option>
+							<?php endforeach; ?>
+						</select>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="email" class="col-sm-2 col-form-label">Report Type</label>
+					<div class="col-sm-10">
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio" name="r_type" id="r_type" value="k">
+							<label class="form-check-label" for="inlineRadio1">Kemenag</label>
+						</div>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio" name="r_type" id="r_type" value="p">
+							<label class="form-check-label" for="inlineRadio2">Pondok</label>
+						</div>
 					</div>
 				</div>
 				<div class="form-group row">
@@ -41,8 +67,9 @@
 			  <thead>
 			    <tr>
 			      <th scope="col">#</th>
+			      <th scope="col">Nama Santri</th>
 			      <th scope="col">Nama File</th>
-			      <th scope="col">Jenis File</th>
+			      <th scope="col">Jenis Raport</th>
 			      <th scope="col">Tanggal Upload</th>
 			      <th scope="col">Action</th>
 			    </tr>
@@ -54,6 +81,7 @@
 			  	?>
 			    <tr>
 			      <th scope="row"><?= $i; ?></th>
+			      <td><?= $f['student_id']; ?></td>
 			      <td><?= $f['name']; ?></td>
 			      <td><?= $f['file_type']; ?></td>
 			      <td><?= date("d-m-Y", $f['date']); ?></td>
