@@ -12,7 +12,7 @@
 
 	<div class="row">
 		<div class="col-lg-8">
-			<form enctype="multipart/form-data" action="user/upload/<?= $group['id']; ?>" method="POST">
+			<form enctype="multipart/form-data" action="user/upload/" method="POST">
 				<div class="form-group row">
 					<label for="email" class="col-sm-2 col-form-label">Email</label>
 					<div class="col-sm-10">
