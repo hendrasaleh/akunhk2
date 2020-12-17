@@ -77,7 +77,7 @@ class Manager extends CI_Controller {
 		$data['title'] = 'User Assignment';
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		
-		$this->db->where('role_id >', 2);
+		// $this->db->where('role_id >', 2);
 		$this->db->order_by('id', 'ASC');
 		$data['users'] = $this->db->get('user')->result_array();
 		

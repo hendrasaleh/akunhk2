@@ -25,7 +25,7 @@
 		  	?>
 		    <tr>
 		      <th scope="row"><?= $i; ?></th>
-		      <td><?= $g['nama']; ?></td>
+		      <td><?= $g['name']; ?></td>
 		      <td>
 				<div class="form-check">
 					<input class="form-check-group" type="checkbox" <?= check_assignment($user['id'], $g['id']); ?> data-user="<?= $user['id']; ?>" data-group="<?= $g['id']; ?>">

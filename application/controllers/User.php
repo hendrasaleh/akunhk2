@@ -73,6 +73,26 @@ class User extends CI_Controller
 		}
 	}
 
+	public function grouplist()
+	{
+		$data['title'] = 'Upload Raport';
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		
+		$user_id = $data['user']['id'];
+
+		$this->db->select('*');
+		$this->db->from('user_to_group');
+		$this->db->join('user_group','user_to_group.group_id = user_group.id');
+		$data['group'] = $this->db->get()->result_array();
+				
+		$this->load->view('templates/header', $data);
+		$this->load->view('templates/sidebar', $data);
+		$this->load->view('templates/topbar', $data);
+		$this->load->view('manager/users', $data);
+		$this->load->view('templates/footer');
+		
+	}
+
 	public function upload()
 	{
 		$data['title'] = 'Upload Raport';
