@@ -122,6 +122,7 @@ class Admin extends CI_Controller
 		$this->db->from('user_role');
 		$this->db->join('user', 'user_role.id = user.role_id');
 		$this->db->order_by('user_role.id', 'ASC');
+		$this->db->order_by('user.name', 'ASC');
 		$data['users'] = $this->db->get()->result_array();
 		
 		$this->load->view('templates/header', $data);

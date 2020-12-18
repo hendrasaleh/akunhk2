@@ -38,12 +38,14 @@
 						<label for="email" class="col-sm-2 col-form-label">Report Type</label>
 						<div class="col-sm-10">
 							<div class="form-check form-check-inline">
-								<input class="form-check-input" type="radio" name="r_type" id="r_type" value="k">
-								<label class="form-check-label" for="inlineRadio1">Kemenag</label>
+								<input type="radio" name="r_type" id="r_type" value="k">
+								&nbsp;
+								<label class="form-check-label" for="radio">Kemenag</label>
 							</div>
 							<div class="form-check form-check-inline">
-								<input class="form-check-input" type="radio" name="r_type" id="r_type" value="p">
-								<label class="form-check-label" for="inlineRadio2">Pondok</label>
+								<input type="radio" name="r_type" id="r_type" value="p">
+								&nbsp;
+								<label class="form-check-label" for="radio">Pondok</label>
 							</div>
 						</div>
 					</div>

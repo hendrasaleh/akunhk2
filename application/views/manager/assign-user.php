@@ -9,7 +9,7 @@
   	<div class="col-lg-6">
 
   		<?= $this->session->flashdata('message'); ?>
-  		<h5><?= $user['name']; ?></h5>
+  		<h5><?= $member['name']; ?></h5>
   		<table class="table table-hover">
 		  <thead>
 		    <tr>
@@ -28,7 +28,7 @@
 		      <td><?= $g['name']; ?></td>
 		      <td>
 				<div class="form-check">
-					<input class="form-check-group" type="checkbox" <?= check_assignment($user['id'], $g['id']); ?> data-user="<?= $user['id']; ?>" data-group="<?= $g['id']; ?>">
+					<input class="form-check-group" type="checkbox" <?= check_assignment($member['id'], $g['id']); ?> data-member="<?= $member['id']; ?>" data-group="<?= $g['id']; ?>">
 				</div>
 		      </td>
 		    </tr>

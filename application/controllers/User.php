@@ -83,6 +83,7 @@ class User extends CI_Controller
 		$this->db->select('*');
 		$this->db->from('user_to_group');
 		$this->db->join('user_group','user_to_group.group_id = user_group.id');
+		$this->db->where('user_to_group.user_id', $user_id);
 		$data['group'] = $this->db->get()->result_array();
 				
 		$this->load->view('templates/header', $data);

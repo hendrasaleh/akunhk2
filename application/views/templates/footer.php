@@ -72,7 +72,7 @@
     });
 
     $('.form-check-group').on('click', function() {
-      const userId = $(this).data('user');
+      const userId = $(this).data('member');
       const groupId = $(this).data('group');
 
       $.ajax({
