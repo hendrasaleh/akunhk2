@@ -27,7 +27,7 @@
 		      <th scope="row"><?= $i; ?></th>
 		      <td><?= $g['name']; ?></td>
 		      <td>
-		      		<a href="uploadform/<?= $g['id']; ?>" class="badge badge-success">upload</a>
+		      		<a href="upload/<?= $g['id']; ?>" class="badge badge-success">upload</a>
 		      </td>
 		    </tr>
 			<?php

@@ -93,13 +93,19 @@ class User extends CI_Controller
 		
 	}
 
-	public function uploadForm($id)
+	public function upload($id)
 	{
-		$data['title'] = 'Upload Raport';
+		$data['title'] = 'Student Report';
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$data['group'] = $this->db->get_where('user_group', ['id' => $id])->row_array();
-		$data['file'] = $this->db->get_where('file', ['user_email' => $this->session->userdata('email')])->result_array();
 		$data['student'] = $this->db->get_where('student', ['group_id' => $id])->result_array();
+
+		$this->db->select('*');
+		$this->db->from('student');
+		$this->db->join('file', 'file.student_id = student.id');
+		$this->db->where('student.group_id', $id);
+		$this->db->order_by('student.full_name');
+		$data['file'] = $this->db->get()->result_array();
 
 		$this->load->view('templates/header', $data);
 		$this->load->view('templates/sidebar', $data);
@@ -108,24 +114,24 @@ class User extends CI_Controller
 		$this->load->view('templates/footer');
 	}
 
-	public function upload()
+	public function uploadForm($id)
 	{
 		$data['title'] = 'Upload Raport';
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
 		$data['group'] = $this->db->get_where('user_group', ['id' => $id])->row_array();
-		$data['file'] = $this->db->get_where('file', ['user_email' => $this->session->userdata('email')])->result_array();
 		$data['student'] = $this->db->get_where('student', ['group_id' => $id])->result_array();
-		
 
 		$this->form_validation->set_rules('email', 'Email', 'required|trim');
 		$this->form_validation->set_rules('student_id', 'Student', 'required|trim');
+		$this->form_validation->set_rules('r_type', 'Report Type', 'required|trim');
 		$this->form_validation->set_rules('file', '','callback_file_check');
 
 		if ($this->form_validation->run() == false) {
 			$this->load->view('templates/header', $data);
 			$this->load->view('templates/sidebar', $data);
 			$this->load->view('templates/topbar', $data);
-			$this->load->view("user/upload-file", $data);
+			$this->load->view("user/upload-form", $data);
 			$this->load->view('templates/footer');
 		} else {
 			
@@ -164,11 +170,16 @@ class User extends CI_Controller
 
 	public function hapusfile($id)
 	{
-		$file = $this->db->get_where('file', ['id' => $id])->row_array();
+		$this->db->select('*');
+		$this->db->from('student');
+		$this->db->join('file', 'student.id = file.student_id');
+		$this->db->where('file.id', $id);
+		$file = $this->db->get()->row_array();
+		$no = $file['group_id'];
 		$this->db->delete('file', ['id' => $id]);
-		unlink(FCPATH . 'assets/files/' . $file['name']);
-		$this->session->set_flashdata('message', '<div class="alert alert-warning" role="alert"> File berhasil dihapus!</div>');
-		redirect('user/upload');
+		unlink(FCPATH . 'assets/files/raport/' . $file['name']);
+		$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> File berhasil dihapus!</div>');
+		redirect("user/upload/$no");
 	}
 
 	public function file_check()

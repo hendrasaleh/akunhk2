@@ -24,11 +24,19 @@ class Manager extends CI_Controller {
 		is_logged_in();
 	}
 
-	public function index()
+	public function index($id=1)
 	{
-		$data['title'] = 'File Management';
+		$data['title'] = 'Report List';
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-		$data['file'] = $this->db->get_where('file', ['user_email' => $this->session->userdata('email')])->result_array();
+		$data['group'] = $this->db->get_where('user_group', ['id' => $id])->row_array();
+
+		$this->db->select('*');
+		$this->db->from('student');
+		$this->db->join('file', 'file.student_id = student.id');
+		$this->db->where('student.group_id', $id);
+		$this->db->order_by('student.group_name');
+		$this->db->order_by('student.full_name');
+		$data['file'] = $this->db->get()->result_array();
 
 		$this->form_validation->set_rules('email', 'Email', 'required|trim');
 		$this->form_validation->set_rules('file', '','callback_file_check');
