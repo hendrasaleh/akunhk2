@@ -80,6 +80,20 @@ class Manager extends CI_Controller {
 		}
 	}
 
+	public function hapusfile($id)
+	{
+		$this->db->select('*');
+		$this->db->from('student');
+		$this->db->join('file', 'student.id = file.student_id');
+		$this->db->where('file.id', $id);
+		$file = $this->db->get()->row_array();
+		$no = $file['group_id'];
+		$this->db->delete('file', ['id' => $id]);
+		unlink(FCPATH . 'assets/files/raport/' . $file['name']);
+		$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> File berhasil dihapus!</div>');
+		redirect("manager/index/$no");
+	}
+
 	public function users()
 	{
 		$data['title'] = 'User Assignment';
